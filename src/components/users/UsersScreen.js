@@ -36,7 +36,8 @@ export const UsersScreen = () => {
    const deleteUser = (user_id) => {
     axios({
       method: 'patch', 
-      url: `https://mern-negozia.herokuapp.com/api/users/${user_id}`,
+      url: `http://localhost:4000/api/users/${user_id}`,
+      //url: `https://mern-negozia.herokuapp.com/${user_id}`,
       headers:{
         'x-token':user.token
       },
@@ -55,7 +56,8 @@ export const UsersScreen = () => {
     const {  name, email, role } = formvalues;
     axios({
         method: 'patch',
-        url: `https://mern-negozia.herokuapp.com/${user_id}`,
+        url:`http://localhost:4000/${user_id}`,
+        //url: `https://mern-negozia.herokuapp.com/${user_id}`,
         headers:{
           'x-token':user.token
         },

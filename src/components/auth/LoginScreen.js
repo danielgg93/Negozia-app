@@ -27,7 +27,8 @@ export const LoginScreen = () => {
         e.preventDefault();
         axios({
             method: 'post',
-            url: 'https://mern-negozia.herokuapp.com/api/auth',
+            url:"http://localhost:4000/api/auth",
+            //url: 'https://mern-negozia.herokuapp.com/api/auth',
             data: {
                 email: loginEmail,
                 password: loginPassword

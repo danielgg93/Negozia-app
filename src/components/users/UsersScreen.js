@@ -10,69 +10,64 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import {users} from '../../helpers/getUsers';
+import { users } from '../../helpers/getUsers';
 import axios from 'axios';
 import { Context } from '../ContextProvider';
 import { Dialog, DialogContent, DialogTitle } from '@mui/material';
-import {UserForm} from '../ui/UserForm';
+import { UserForm } from '../ui/UserForm';
 
 export const UsersScreen = () => {
 
   const [createdUsers, setcreatedUsers] = useState([]);
-  const  {user} = useContext(Context);
+  const { user } = useContext(Context);
   const [userTable, setuserTable] = useState(undefined);
 
 
-    const getUsers = async() => {
-      const userData = await users();
-      console.log(userData)
-      setcreatedUsers(userData.data.user);
-    }
+  const getUsers = async () => {
+    const userData = await users(user.token);
+    setcreatedUsers(userData.data.user);
+  }
 
-   useEffect(() => {
+  useEffect(() => {
     getUsers();
-   }, []);
+  });
 
-   const deleteUser = (user_id) => {
+  const deleteUser = (user_id) => {
     axios({
-      method: 'patch', 
-      url: `http://localhost:4000/api/users/${user_id}`,
-      //url: `https://mern-negozia.herokuapp.com/${user_id}`,
-      headers:{
-        'x-token':user.token
+      method: 'patch',
+      url: `https://mern-negozia.herokuapp.com/api/users/${user_id}`,
+      headers: {
+        'x-token': user.token
       },
       data: {
-          isActive:false
+        isActive: false
       }
-    }).then((response) => { 
+    }).then((response) => {
       getUsers();
     }, (error) => {
-      console.log(error);
     });
-   }
+  }
 
-   const handleUpdateForm = (formvalues,user_id) => {
+  const handleUpdateForm = (formvalues, user_id) => {
 
-    const {  name, email, role } = formvalues;
+    const { name, email, role } = formvalues;
     axios({
-        method: 'patch',
-        url:`http://localhost:4000/${user_id}`,
-        //url: `https://mern-negozia.herokuapp.com/${user_id}`,
-        headers:{
-          'x-token':user.token
-        },
-        data: {
-            name: name,
-            email: email,
-            role: role,
-        }
+      method: 'patch',
+      url: `https://mern-negozia.herokuapp.com/api/users/${user_id}`,
+      headers: {
+        'x-token': user.token
+      },
+      data: {
+        name: name,
+        email: email,
+        role: role,
+      }
     }).then((response) => {
       setuserTable(undefined)
       getUsers();
     }, (error) => {
-        console.log(error);
     });
-}
+  }
   return (
     <div>
       <Navbar />
@@ -80,42 +75,40 @@ export const UsersScreen = () => {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-            <TableCell align="left">id</TableCell>
+              <TableCell align="left">id</TableCell>
               <TableCell align="right">Name</TableCell>
               <TableCell align="right">Email</TableCell>
               <TableCell align="right">Role</TableCell>
-              {user?.role==='ADMIN'&&
+              {user?.role === 'ADMIN' &&
                 <TableCell align="right">Actions</TableCell>}
             </TableRow>
           </TableHead>
-            <TableBody>
-          {createdUsers.map((u) => (
-           u.isActive?  <TableRow key={u.id}>
-               <TableCell align="left">{u.id}</TableCell>
-              <TableCell align="right">
-                {u.name}
-              </TableCell>
-              <TableCell align="right">{u.email}</TableCell>
-              <TableCell align="right">{u.role}</TableCell>
-              {user?.role ==='ADMIN'&&
-              <TableCell align="right">
-                  <Button onClick={()=>setuserTable(u)}>
-                      <ModeEditOutlineOutlinedIcon/>Edit
-                  </Button>
-                  <Button onClick={() => deleteUser(u.id)}>
-                      <DeleteOutlineOutlinedIcon/>Delete
-                  </Button>
+          <TableBody>
+            {createdUsers.map((u) => (
+              u.isActive ? <TableRow key={u.id}>
+                <TableCell align="left">{u.id}</TableCell>
+                <TableCell align="right">{u.name}</TableCell>
+                <TableCell align="right">{u.email}</TableCell>
+                <TableCell align="right">{u.role}</TableCell>
+                {user?.role === 'ADMIN' &&
+                  <TableCell align="right">
+                    <Button onClick={() => setuserTable(u)}>
+                      <ModeEditOutlineOutlinedIcon />Edit
+                    </Button>
+                    <Button onClick={() => deleteUser(u.id)}>
+                      <DeleteOutlineOutlinedIcon />Delete
+                    </Button>
                   </TableCell>
-                  }
-            </TableRow> :null
-          ))}
-        </TableBody>
+                }
+              </TableRow> : null
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
-      <Dialog open={!!userTable} onClose={()=>setuserTable(undefined)}>
+      <Dialog open={!!userTable} onClose={() => setuserTable(undefined)}>
         <DialogTitle>Edit User</DialogTitle>
         <DialogContent>
-          <UserForm user={userTable} handleSubmitForm={handleUpdateForm}/>
+          <UserForm user={userTable} handleSubmitForm={handleUpdateForm} />
         </DialogContent>
 
       </Dialog>

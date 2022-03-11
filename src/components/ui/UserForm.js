@@ -9,7 +9,7 @@ export const UserForm = ({ user, handleSubmitForm }) => {
 
     const roles = {
         admin: "ADMIN",
-        user:"USER"
+        user: "USER"
     }
 
     const [formvalues, handleCreateInputChange] = useForm({
@@ -30,10 +30,10 @@ export const UserForm = ({ user, handleSubmitForm }) => {
             <TextField name="name" value={name} onChange={handleCreateInputChange} type="text" style={textFieldStyle} label='Name' placeholder='Enter Name' fullWidth required />
             <TextField name="email" value={email} onChange={handleCreateInputChange} type="text" style={textFieldStyle} label='Email' placeholder='Enter Email' fullWidth required />
             <Select name="role" value={role} onChange={handleCreateInputChange} type="text" style={textFieldStyle} label='Role' placeholder='Enter Role' fullWidth required >
-          {Object.keys(roles).map((role,index) => (
-            <MenuItem value={roles[role]} key={index}>{roles[role]}</MenuItem>
-          ))}
-                </Select>
+                {Object.keys(roles).map((role, index) => (
+                    <MenuItem value={roles[role]} key={index}>{roles[role]}</MenuItem>
+                ))}
+            </Select>
             {!user && <TextField name="password1" value={password1} onChange={handleCreateInputChange} style={textFieldStyle} label='Password' placeholder='Enter password' type="password" fullWidth required />}
             {!user && <TextField name="password2" value={password2} onChange={handleCreateInputChange} style={textFieldStyle} label='Password' placeholder='Repeat password' type="password" fullWidth required />}
             <Button type="submit" color="primary" fullWidth variant="contained" style={btstyle}>{user ? "Update" : "Create"}</Button>

@@ -7,7 +7,6 @@ export const NegoziaApp = () => {
     return (
         <ContextProvider>
             <AppRouter/>
-            
         </ContextProvider>
     )
 }

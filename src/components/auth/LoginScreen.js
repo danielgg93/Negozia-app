@@ -27,23 +27,21 @@ export const LoginScreen = () => {
         e.preventDefault();
         axios({
             method: 'post',
-            url:"http://localhost:4000/api/auth",
-            //url: 'https://mern-negozia.herokuapp.com/api/auth',
+            url: 'https://mern-negozia.herokuapp.com/api/auth',
             data: {
                 email: loginEmail,
                 password: loginPassword
             }
         }).then((response) => {
-            const datos = response.data;
-            if (datos.ok) {
+            const datos = response?.data;
+            if (datos?.ok) {
                 setUser(datos);
                 localStorage.setItem('user', JSON.stringify(datos));
-                navigate('/user');
+                navigate("/user");
             } else {
-                Swal.fire('Error', datos.data.msg, 'error')
+                Swal.fire('Error', datos?.data?.msg, 'error')
             }
         }, (error) => {
-            console.log(error);
         });
     }
 
@@ -96,10 +94,10 @@ export const LoginScreen = () => {
                 </form>
                 <Typography> Do you have an account?
                     <Button
-                    color="primary"
-                    style={btstyle}
-                    onClick={()=>navigate('/create')}
-                    variant="contained"
+                        color="primary"
+                        style={btstyle}
+                        onClick={() => navigate('/create')}
+                        variant="contained"
                     >
                         Sign Up?
                     </Button>
